@@ -3,30 +3,77 @@
 	"name": "Human Resource Machine",
 	"patterns": [
 		{
+			"include": "#comments"
+		},
+		{
 			"include": "#keywords"
 		},
 		{
-			"include": "#strings"
+			"include": "#label-target"
+		},
+		{
+			"include": "#label-argument"
+		},
+		{
+			"include": "#comment-definition"
 		}
 	],
 	"repository": {
-		"keywords": {
-			"patterns": [{
-				"name": "keyword.control.human-resource-machine",
-				"match": "\\b(if|while|for|return)\\b"
-			}]
+		"comments": {
+				"name": "comment.line.double-dash.human-resource-machine",
+				"match": "--.*"
 		},
-		"strings": {
-			"name": "string.quoted.double.human-resource-machine",
-			"begin": "\"",
-			"end": "\"",
+		"keywords": {
 			"patterns": [
 				{
-					"name": "constant.character.escape.human-resource-machine",
-					"match": "\\\\."
+					"begin": "^    ",
+					"end": "\\b",
+					"name": "keyword.control.human-resource-machine",
+					"match": "COPYFROM|COPYTO|ADD|SUB|BUMPUP|BUMPDN|COMMENT|INBOX|OUTBOX|JUMPN|JUMPZ|JUMP"
+				}, 
+				{
+					"name": "keyword.other.human-resource-machine",
+					"match": "^DEFINE (COMMENT|LABEL)\\b"
 				}
 			]
+		},
+		"label-target": {
+			"match": "^([a-z]+):",
+			"captures": {
+				"1": {
+					"name": "entity.name.tag.human-resource-machine"
+				}
+			}
+		},
+		"label-argument": {
+			"patterns": [
+				{
+					"match": "\\s+([a-z]+)\\b",
+					"captures": {
+						"1": { "name": "entity.name.tag.human-resource-machine" }
+					}
+				},
+				{
+					"match": "\\s+(\\d+)\\b",
+					"captures": {
+						"1": { "name": "constant.numeric.human-resource-machine" }
+					}
+				},
+				{
+					"match": "\\s+\\[(\\d+)\\]\\b",
+					"captures": {
+						"1": { "name": "constant.numeric.human-resource-machine" }
+					}
+				}
+			]
+		},
+		"comment-definition": {
+			"match": "^([a-zA-Z0-9/+=]+);?$",
+			"captures": {
+				"1": { "name": "string.unquoted.human-resource-machine" }
+			}
 		}
 	},
-	"scopeName": "source.hrm"
+	"scopeName": "source.hrm",
+	"firstLineMatch": "^-- HUMAN RESOURCE MACHINE PROGRAM --$"
 }
