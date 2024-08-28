@@ -1,0 +1,101 @@
+-- HUMAN RESOURCE MACHINE PROGRAM --
+
+-- Valid programs can be identified by successfully pasting into the HRM game itself. Invalid
+-- programs will be rejected. Common causes of invalid programs include:
+--  * Non-dense labels
+--  * Too-large carpet addresses
+-- Invalid base64 encodings do not cause a failure to import; your comment/label will, however
+-- render as a black circle.
+--
+-- Single-line comments can be identified via double-dash. 
+--   Note that these comments DO NOT persist when copied into the game itself. 
+--   If you want them to survive, you need to use your text editor as the source of truth
+--
+-- Supported commands must be indented by 4 spaces, and include the following:
+--   Argument-less commands:
+--     INBOX
+--       Read the next value from the inbox
+--     OUTBOX
+--       Copy the current held value to the outbox
+--
+--   Address-argumented commands:
+--     These commands support a single argument in two forms:
+--       COMMAND #   -- Will perform the operation on the value at address #
+--       COMMAND [#] -- Will perform the operation on the value at the address stored at address #
+--     For example, assuming you had 4 slots (0-indexed) we would expect the following behavior:
+--
+--       1, 2, 3, 0
+--       COMMAND 1   -- Does something with the value 2 (Address 1) 
+--       COMMAND [1] -- Does something with the value 3 (Address 2)
+--
+--     COPYFROM
+--       Copy a value from an address
+--     COPYTO
+--       Copy the currently held value to the address
+--     ADD
+--       Add the held value to the value at the address
+--     SUB
+--       Subtract the held value to the value at the address
+--     BUMPUP
+--       Increment the value at the address, then hold it
+--     BUMPDN
+--       Decrement the value at the address, then hold it
+--
+--   Label-argumented commands:
+--     These commands support a single arugment in the form of a label. Labels are how HRM
+--     represents the destination of any of the JUMP commands. They are not visible in the UI
+--     of the game.
+--
+--     Labels are all lower-case values, alphabetically ordered starting at "a". If more than 26
+--     labels are necessary, then it continues as a base-26 number (i.e. "aa"). Labels must be dense,
+--     i.e. you can't have the labels "a", "b", and "d".
+--
+--     The label itself (i.e. the jump destination) is indicated by a line with the label name
+--     followed by a colon.
+--
+--     JUMP @
+--       Jumps to the label indicated
+--     JUMPN @
+--       Jumps to the label indicated IFF the held value is negative
+--     JUMPZ @
+--       Jumps to the label indicated IFF the held value is equal to zero
+--
+--   Drawn-labels:
+--     In-game there is support for "variable names" on the carpet and "comments" in the code.
+--     This is done by using your mouse to draw text/images/whatever pleases you.
+--     When copy-pasting code, each is stored as a base64 encoding of whatever is drawn.
+--     This base-64 encoding is stored at the bottom of the file in "DEFINE COMMENT" and "DEFINE LABEL"
+--     blocks. The base-64 encoding may be split into multiple lines (80 characters at a time), and will 
+--     terminate in a semi-colon.
+--     
+--     Drawn carpet labels will just be indicated by their carpet address (DEFINE LABEL #)
+--
+--     Code comments will be stored in-order, referenced by COMMENT # commands, which associate with a
+--     DEFINE COMMENT # block at the bottom of the file.
+-- 
+--     Manually editing these is not recommended; although it will not cause your game to crash or
+--     fail to import, it will ruin the label drawing
+
+    INBOX   -- comment
+    OUTBOX  
+    COPYFROM 0
+    COPYTO   [1]
+    ADD      2
+    SUB      [3]
+    BUMPUP   4
+    BUMPDN   [5]
+a: -- comment
+    JUMP     a
+b:
+    JUMPZ    b
+c:
+    JUMPN    c
+    COMMENT  0
+
+
+DEFINE COMMENT 0
+eJxjYBgFo2AUjGQAAAQEAAE;
+
+DEFINE LABEL 1
+eJwTZ2BgaDa8lflX90/WDs2m/HAVx6rbSvktq5UCJriossxn1f6z3ttEfl+Xw8sjrn7cx5yiWw7uSLmz
+WydzydbKrN4NZzOy129It9+0IX3J1nkZHDv18/7tmVu1Yd/jqRv2MYyCUTAKBj0AAFOrLFU;
