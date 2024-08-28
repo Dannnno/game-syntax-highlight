@@ -1,0 +1,25 @@
+{
+  "name": "video-game-grammars",
+  "displayName": "video-game-grammars",
+  "description": "",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.92.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "human-resource-machine",
+      "aliases": ["Human Resource Machine", "human-resource-machine"],
+      "extensions": [".hrm"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "human-resource-machine",
+      "scopeName": "source.hrm",
+      "path": "./syntaxes/human-resource-machine.tmLanguage.json"
+    }]
+  }
+}
